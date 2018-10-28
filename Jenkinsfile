@@ -5,10 +5,10 @@ node {
     }
 
     stage('Build') {
-       sh '/usr/bin/oc start-build spring-petclinic'
+       sh './oc start-build spring-petclinic'
     }
 
     stage('Deploy') {
-       sh ' /usr/bin/oc deploy spring-petclinic --latest'
+       sh ' ./oc deploy spring-petclinic --latest'
     }
 }
