@@ -1,30 +1,14 @@
-pipeline {
-  agent any
-  stages {
-    stage('Create Image Builder') {
-      when {
-        expression {
-          openshift.withCluster() {
-            return !openshift.selector("ci", "spring-petclinic").exists();
-          }
-        }
-      }
-      steps {
-        script {
-          openshift.withCluster() {
-            openshiftBuild(namespace: 'ci', buildConfig: 'spring-petclinic', showBuildLogs: 'true')
-          }
-        }
-      }
+#!/usr/bin/env groovy
+node {
+    stage('checkout') {
+        checkout scm
     }
-    stage('Promote to DEV') {
-      steps {
-        script {
-          openshift.withCluster() {
-            openshiftDeploy(namespace: 'ci', deploymentConfig: 'spring-petclinic')
-          }
-        }
-      }
+
+    stage('Build') {
+       sh 'oc start-build spring-petclinic'
     }
-  }
+
+    stage('Deploy') {
+       sh ' oc deploy spring-petclinic --latest'
+    }
 }
