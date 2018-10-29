@@ -5,7 +5,7 @@ node {
     }
 
     stage('Build') {
-       sh './oc start-build spring-petclinic'
+       sh './oc start-build spring-petclinic -F'
     }
 
     stage('Deploy') {
